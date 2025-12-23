@@ -40,7 +40,7 @@ docker compose up --build
 ```
 
 服務啟動後：
-- **Web UI**: http://localhost:8008
+- **Web UI (Nginx)**: http://localhost:8008
 - **API 文件**: http://localhost:8008/docs
 
 ## 使用方式
@@ -54,10 +54,10 @@ docker compose up --build
 
 ### CLI 互動介面
 
-進入容器後執行：
+進入後端容器後執行：
 
 ```bash
-docker exec -it gemini-notebook python -m app.cli
+docker compose exec backend python -m app.cli
 ```
 
 依照選單操作即可。
@@ -107,7 +107,8 @@ gemini-notebook/
 │   ├── core.py           # 核心邏輯（FileSearchManager）
 │   ├── cli.py            # CLI 互動介面
 │   └── static/
-│       └── index.html    # Web UI
+│       └── index.html    # (Legacy) 單檔版 Web UI
+├── frontend/             # React + Vite 前端（Nginx 提供）
 ├── requirements.txt
 ├── Dockerfile
 ├── docker-compose.yml

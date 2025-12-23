@@ -1,0 +1,12 @@
+.git
+.gitignore
+__pycache__/
+*.pyc
+.env
+
+# Backend image doesn't need frontend assets
+frontend/
+
+# Common Node/Python noise
+node_modules/
+dist/

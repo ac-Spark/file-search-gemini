@@ -48,8 +48,7 @@ for logger_name in ("uvicorn", "uvicorn.access", "uvicorn.error"):
 
 from fastapi import FastAPI, File, HTTPException, UploadFile, Request
 from fastapi.middleware.cors import CORSMiddleware
-from fastapi.responses import FileResponse, JSONResponse
-from fastapi.staticfiles import StaticFiles
+from fastapi.responses import JSONResponse
 from pydantic import BaseModel
 from google.genai.errors import ClientError
 
@@ -235,16 +234,7 @@ def get_history():
     return manager.get_history()
 
 
-# 靜態檔案
-static_dir = Path(__file__).parent / "static"
-if static_dir.exists():
-    app.mount("/static", StaticFiles(directory=static_dir), name="static")
-
-
 @app.get("/")
 def index():
-    """首頁。"""
-    index_file = static_dir / "index.html"
-    if index_file.exists():
-        return FileResponse(index_file)
+    """API 入口。"""
     return {"message": "Gemini File Search API", "docs": "/docs"}
