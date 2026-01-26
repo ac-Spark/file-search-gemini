@@ -15,17 +15,29 @@ export default function ChatArea({
   loading,
 }: ChatAreaProps) {
   const [input, setInput] = useState('');
+  const [shouldFocus, setShouldFocus] = useState(false);
   const chatEndRef = useRef<HTMLDivElement>(null);
+  const textareaRef = useRef<HTMLTextAreaElement>(null);
 
   useEffect(() => {
     chatEndRef.current?.scrollIntoView({ behavior: 'smooth' });
   }, [messages]);
 
+  // 當需要重新聚焦時執行
+  useEffect(() => {
+    if (shouldFocus && textareaRef.current && !disabled) {
+      textareaRef.current.focus();
+      setShouldFocus(false);
+    }
+  }, [shouldFocus, disabled]);
+
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    if (input.trim() && !loading) {
+    if (input.trim()) {
       onSendMessage(input.trim());
       setInput('');
+      // 標記需要重新聚焦
+      setShouldFocus(true);
     }
   };
 
@@ -65,16 +77,17 @@ export default function ChatArea({
 
       <form className="input-area" onSubmit={handleSubmit} aria-label="訊息輸入表單">
         <textarea
+          ref={textareaRef}
           value={input}
           onChange={e => setInput(e.target.value)}
           onKeyDown={handleKeyDown}
           placeholder={disabled ? '請先選擇知識庫...' : '輸入訊息... (Enter 傳送, Shift+Enter 換行)'}
-          disabled={disabled || loading}
+          disabled={disabled}
           aria-label="訊息輸入框"
         />
         <button
           type="submit"
-          disabled={disabled || loading || !input.trim()}
+          disabled={disabled || !input.trim()}
           aria-label="傳送訊息"
         >
           ⬡ 傳送

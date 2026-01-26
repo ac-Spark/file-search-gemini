@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import type { Store } from '../types';
 
 interface StoreManagementModalProps {
@@ -22,6 +22,16 @@ export default function StoreManagementModal({
 }: StoreManagementModalProps) {
   const [newStoreName, setNewStoreName] = useState('');
   const [creating, setCreating] = useState(false);
+
+  useEffect(() => {
+    const handleEsc = (e: KeyboardEvent) => {
+      if (e.key === 'Escape' && isOpen) {
+        onClose();
+      }
+    };
+    window.addEventListener('keydown', handleEsc);
+    return () => window.removeEventListener('keydown', handleEsc);
+  }, [isOpen, onClose]);
 
   if (!isOpen) return null;
 

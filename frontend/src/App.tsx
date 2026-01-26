@@ -162,8 +162,12 @@ export default function App() {
   };
 
   const handleSendMessage = async (text: string) => {
-    setMessages(prev => [...prev, { role: 'user', text }]);
-    setMessages(prev => [...prev, { role: 'model', loading: true }]);
+    // 一次性更新訊息，減少重新渲染次數
+    setMessages(prev => [
+      ...prev,
+      { role: 'user', text },
+      { role: 'model', loading: true }
+    ]);
     setLoading(true);
 
     try {
