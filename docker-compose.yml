@@ -11,10 +11,11 @@ services:
       - ./.env:/app/.env
       - ./data:/app/data
     expose:
-      - "8008"
+      - "${BACKEND_PORT:-8008}"
     environment:
       - PYTHONDONTWRITEBYTECODE=1
-    command: uvicorn app.main:app --host 0.0.0.0 --port 8008 --reload
+      - BACKEND_PORT=${BACKEND_PORT:-8008}
+    command: uvicorn app.main:app --host 0.0.0.0 --port ${BACKEND_PORT:-8008} --reload
     restart: unless-stopped
 
   frontend:
@@ -28,7 +29,9 @@ services:
     depends_on:
       - backend
     ports:
-      - "${PORT:-8008}:8008"
+      - "${PORT:-8008}:${NGINX_PORT:-8008}"
     environment:
-      - VITE_API_URL=http://localhost:8008
+      - VITE_API_URL=http://localhost:${PORT:-8008}
+      - NGINX_PORT=${NGINX_PORT:-8008}
+      - BACKEND_PORT=${BACKEND_PORT:-8008}
     restart: unless-stopped
