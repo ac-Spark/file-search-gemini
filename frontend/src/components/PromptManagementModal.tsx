@@ -271,11 +271,11 @@ export default function PromptManagementModal({
     }
   };
 
-  const handleModelChange = (modelId: string) => {
+  const handleModelChange = async (modelId: string) => {
     setSelectedModel(modelId);
     localStorage.setItem('selectedModel', modelId);
-    // TODO: 通知後端切換模型
-    alert(`已切換到 ${MODELS.find(m => m.id === modelId)?.name}`);
+    // 重新啟動聊天以套用新模型
+    await onRestartChat();
   };
 
   if (!isOpen) return null;

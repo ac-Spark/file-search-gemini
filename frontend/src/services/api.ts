@@ -84,11 +84,16 @@ export async function deleteFile(fileName: string): Promise<void> {
   await handleResponse<void>(response);
 }
 
+// 取得目前選擇的模型
+function getSelectedModel(): string {
+  return localStorage.getItem('selectedModel') || 'gemini-2.5-flash-lite';
+}
+
 export async function startChat(storeName: string): Promise<StartChatResponse> {
   const response = await fetchWithApiKey(`${API_BASE}/chat/start`, {
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify({ store_name: storeName }),
+    body: JSON.stringify({ store_name: storeName, model: getSelectedModel() }),
   });
   return handleResponse<StartChatResponse>(response);
 }

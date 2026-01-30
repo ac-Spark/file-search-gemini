@@ -140,7 +140,7 @@ class QueryRequest(BaseModel):
 
 class ChatStartRequest(BaseModel):
     store_name: str
-    model: str = os.getenv("GEMINI_MODEL_NAME", "gemini-2.5-flash")
+    model: str = os.getenv("GEMINI_MODEL_NAME", "gemini-2.5-flash-lite")
 
 
 class ChatMessageRequest(BaseModel):
